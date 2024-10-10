@@ -79,9 +79,13 @@ class StockingDataScraper:
         with open(scraped_data_file, "r", encoding="utf-8") as f:
             scraped_data_raw = f.readlines()
             scraped_data = [d.replace("\n", "") for d in scraped_data_raw]
-        self.last_update = datetime.strptime(
-            scraped_data[0].replace("Last Update: ", ""), "%Y-%m-%d %H:%M:%S"
-        )
+        try:
+            self.last_update = datetime.strptime(
+                scraped_data[0].replace("Last Update: ", ""), "%Y-%m-%d %H:%M:%S"
+            )
+        except IndexError:
+            self.last_update = datetime(2020, 1, 1)
+
         return scraped_data[1:]
 
     @staticmethod
