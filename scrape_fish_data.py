@@ -31,6 +31,9 @@ if __name__ == "__main__":
             logwriter.write(f"Failed to load config: {exc}\n")
             sys.exit()
 
+    if not os.path.isFile(path + "/last_scraped_data.txt"):
+        with open(path + "/last_scraped_data.txt", "w", encoding="utf-8") as f:
+            f.close()
     sds = StockingDataScraper(
         config["spotsToCheck"], path + "/last_scraped_data.txt", logwriter
     )
