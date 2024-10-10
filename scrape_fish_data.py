@@ -20,7 +20,7 @@ if __name__ == "__main__":
     logwriter.write(f"\n-----running {date_time_str}-----\n")
 
     # Load Config
-    config_file = path + "/config.yaml.local"
+    config_file = path + "/config.yaml"
     if os.path.isfile(path + "/config.yaml.local"):
         config_file = path + "/config.yaml.local"
         logwriter.write("found local config file: loading from there\n")
