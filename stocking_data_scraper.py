@@ -127,11 +127,14 @@ class StockingDataScraper:
         Args:
             logfile (string): log file with full path
             current_time (datetime): current time
-            timeout (int): frequency(days) to send the logs
+            timeout (int): frequency(days) to send the logs (if 0, dont send)
 
         Returns:
             bool: whether to send logs
         """
+
+        if timeout == 0:
+            return False
         should_send_logs = False
 
         with open(logfile, "r", encoding="utf-8") as f:

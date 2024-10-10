@@ -23,7 +23,7 @@ if __name__ == "__main__":
     config_file = path + "/config.yaml.local"
     if os.path.isfile(path + "/config.yaml.local"):
         config_file = path + "/config.yaml.local"
-        logwriter.write("found local config file: loading from there")
+        logwriter.write("found local config file: loading from there\n")
     with open(config_file, "r", encoding="utf-8") as stream:
         try:
             config = yaml.safe_load(stream)

@@ -3,7 +3,7 @@ spotsToCheck:
   - "HIGHLAND GLEN PARK P"
   - "TIBBLE FK RES"
 sendEmail: "sender@email.com"
-sendEmailPassword: "password"
+sendEmailPassword: "password"     # password for login. if this is a gmail account, this will need to be an app password (see readme)
 recipients:
   - "examole@email.com"
-logSendFreqDays: 7
+logSendFreqDays: 7                # How often to send log data to the email. If 0, no information will be sent
