@@ -1,0 +1,9 @@
+spotsToCheck:
+  - "MANILA CREEK PARK POND"
+  - "HIGHLAND GLEN PARK P"
+  - "TIBBLE FK RES"
+sendEmail: "sender@email.com"
+sendEmailPassword: "password"
+recipients:
+  - "examole@email.com"
+logSendFreqDays: 7

@@ -1,0 +1,6 @@
+__pycache__
+*.yaml.local
+log_info.txt
+last_scraped_data.txt
+
+
