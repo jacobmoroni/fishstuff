@@ -2,6 +2,8 @@ spotsToCheck:
   - "MANILA CREEK PARK POND"
   - "HIGHLAND GLEN PARK P"
   - "TIBBLE FK RES"
+shouldSendEmail: false
+ntfyTopic: "example"
 sendEmail: "sender@email.com"
 sendEmailPassword: "password"     # password for login. if this is a gmail account, this will need to be an app password (see readme)
 recipients:

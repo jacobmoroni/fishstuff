@@ -8,9 +8,9 @@ from datetime import datetime
 import yaml
 from stocking_data_scraper import StockingDataScraper
 from emailer import Emailer
+import requests
 
 if __name__ == "__main__":
-
     # Set up logging
     LOGFILE = "/log_info.txt"
     now = datetime.now()
@@ -30,24 +30,31 @@ if __name__ == "__main__":
         except yaml.YAMLError as exc:
             logwriter.write(f"Failed to load config: {exc}\n")
             sys.exit()
-
+    send_email = config["shouldSendEmail"]
+    ntfy_url = f"https://ntfy.sh/{config['ntfyTopic']}"
     if not os.path.isfile(path + "/last_scraped_data.txt"):
         with open(path + "/last_scraped_data.txt", "w", encoding="utf-8") as f:
             f.close()
     sds = StockingDataScraper(
         config["spotsToCheck"], path + "/last_scraped_data.txt", logwriter
     )
-
-    emailer = Emailer(config["sendEmail"], config["sendEmailPassword"])
+    if send_email:
+        emailer = Emailer(config["sendEmail"], config["sendEmailPassword"])
 
     # Send new stocking events
     if len(sds.new_events) > 0:
-        logwriter.write("Sending email\n")
-        emailer.sendEmail(
-            subject="New Fish Stocking Event Detected",
-            body="\n\n".join(sds.new_events),
-            recipients=config["recipients"],
-        )
+        logwriter.write("Sending data\n")
+
+        body="\n\n".join(sds.new_events)
+        if send_email:
+            emailer.sendEmail(
+                subject="New Fish Stocking Event Detected",
+                body=body,
+                recipients=config["recipients"],
+            )
+        else:
+            requests.post(ntfy_url, data=body)
+
     else:
         logwriter.write("No new stocking information\n")
 
@@ -55,11 +62,14 @@ if __name__ == "__main__":
     if sds.checkShouldSendLogs(path + LOGFILE, now, config["logSendFreqDays"]):
         with open(path + LOGFILE, "r", encoding="utf-8") as logs:
             body = logs.read()
-            emailer.sendEmail(
-                subject="Fish Stocking Log Report:",
-                body=body,
-                recipients=config["recipients"],
-            )
+            if send_email:
+                emailer.sendEmail(
+                    subject="Fish Stocking Log Report:",
+                    body=body,
+                    recipients=config["recipients"],
+                )
+            else:
+                requests.post(ntfy_url, data=body)
             logs.close()
         logwriter.close()
         # Clear file
